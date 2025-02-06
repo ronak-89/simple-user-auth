@@ -1,3 +1,3 @@
 # Simple User Auth 
 
-## Databse : Postgres 
+## Databse : Mongo 

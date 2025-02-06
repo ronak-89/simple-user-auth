@@ -8,19 +8,23 @@ import (
 )
 
 func main() {
+	client := config.MongoConnect()
 
-	config.AutoMigrate()
+	userService := services.NewUserService(client)
+	userHandler := handlers.NewUserHandler(userService)
 
 	router := gin.Default()
 
-	router.POST("/login", services.Login)
-	router.POST("/user", handlers.RegisterUser)
-	router.POST("/verify-otp", services.VerifyOtp)
-	router.GET("/users", services.GetUsers)
-	router.GET("/user/:id", services.GetUserById)
-	router.PUT("/user/:id", services.UpdateUser)
-	router.PATCH("/user/:id", services.PatchUser)
-	router.DELETE("/user/:id", services.DeleteUser)
+	router.POST("/login", userHandler.Login)
+	router.POST("/user", userHandler.RegisterUser)
+	router.POST("/verify-otp", userHandler.VerifyOtp)
+
+	// router.POST("/test", services.GetData)
+	// router.GET("/users", services.GetUsers)
+	// router.GET("/user/:id", services.GetUserById)
+	// router.PUT("/user/:id", services.UpdateUser)
+	// router.PATCH("/user/:id", services.PatchUser)
+	// router.DELETE("/user/:id", services.DeleteUser)
 
 	err := router.Run("localhost:8000")
 	if err != nil {

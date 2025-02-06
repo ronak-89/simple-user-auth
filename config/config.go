@@ -1,14 +1,20 @@
 package config
 
 import (
-	_ "github.com/joho/godotenv/autoload"
 	"os"
 	"strconv"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 type Config struct {
 	DB    PostgresConfig
 	EMAIL EmailConfig
+	DB2   MongoConfig
+}
+
+type MongoConfig struct {
+	URL string
 }
 
 type EmailConfig struct {
@@ -33,6 +39,9 @@ func LoadConfig() (*Config, error) {
 			Port:     emailPort,
 			Username: os.Getenv("EMAIL_USERNAME"),
 			Password: os.Getenv("EMAIL_PASSWORD"),
+		},
+		DB2: MongoConfig{
+			URL: os.Getenv("MONGODB_URI"),
 		},
 	}
 

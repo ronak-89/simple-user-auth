@@ -1,16 +1,25 @@
 package repositories
 
 import (
-	"github.com/ronak-89/simple-user-auth/internal/models"
+	"context"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// var db = config.DbConnection()
+type EmailRepository struct {
+	EmailCollection *mongo.Collection
+}
 
-func CreateEmail(email string, otp string) error {
-	emailOtp := models.EmailOtp{
-		Email: email,
-		Otp:   otp,
+func NewEmailRepository(client *mongo.Client) *EmailRepository {
+	return &EmailRepository{
+		EmailCollection: client.Database("auth").Collection("email"),
 	}
-	return db.Create(emailOtp).Error
+}
+
+func (r *EmailRepository) CreateEmail(email string, otp string) error {
+
+	_, err := r.EmailCollection.InsertOne(context.TODO(), bson.D{{Key: "email", Value: email}, {Key: "otp", Value: otp}})
+	return err
 
 }
