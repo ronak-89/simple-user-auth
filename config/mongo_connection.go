@@ -7,6 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var cnf, _ = LoadConfig()
+
 func MongoConnect() *mongo.Client {
 
 	uri := cnf.DB2.URL

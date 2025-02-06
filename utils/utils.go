@@ -2,19 +2,20 @@ package utils
 
 import (
 	"fmt"
+	"math/rand"
+
 	"github.com/ronak-89/simple-user-auth/config"
 	"golang.org/x/crypto/bcrypt"
 	gomail "gopkg.in/mail.v2"
-	"math/rand"
 )
 
 var cnf, _ = config.LoadConfig()
 
-func SendMail(otp string) {
+func SendMail(otp string, email string) {
 	message := gomail.NewMessage()
 
 	message.SetHeader("From", "ronak285.rejoice@gmail.com")
-	message.SetHeader("To", "ronak@appscrip.co")
+	message.SetHeader("To", email)
 	message.SetHeader("Subject", "testing")
 
 	message.SetBody("text/plain", fmt.Sprintf("Your OTP is: %s", otp))
